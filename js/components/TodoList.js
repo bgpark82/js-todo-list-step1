@@ -5,15 +5,17 @@ import {
 } from "../utils/validators.js";
 import Todos from "../domain/todos.js";
 import { todoListDOM } from "../utils/templates.js";
-import {
-    EVENT,
-    CLASS,
-    NODE,
-    KEY_EVENT,
-} from "../utils/constants.js";
+import { EVENT, CLASS, NODE, KEY_EVENT } from "../utils/constants.js";
 
 class TodoList {
-    constructor({ $target, todos, onToggleTodo, onRemoveTodo, onEditTodo }) {
+    constructor({
+        $target,
+        todos,
+        onToggleTodo,
+        onRemoveTodo,
+        onEditTodo,
+        store,
+    }) {
         checkTarget($target);
         checkInstance(todos, Todos);
         checkFunction(onToggleTodo);
@@ -26,9 +28,11 @@ class TodoList {
         this.onRemoveTodo = onRemoveTodo;
         this.onEditTodo = onEditTodo;
         this.isEditing = false;
+        this.store = store;
 
         this.bindEvents();
         this.render();
+        this.store.subscribe(this.render);
     }
 
     bindEvents = () => {
@@ -100,9 +104,11 @@ class TodoList {
         this.render();
     };
 
-    render = () => {
-        const selectedTodos = this.state.getSelectedTodos();
-        this.$target.innerHTML = this.createTodoListDOM(selectedTodos);
+    render = (state) => {
+        this.$target.innerHTML = todoListDOM(state);
+
+        // const selectedTodos = this.state.getSelectedTodos();
+        // this.$target.innerHTML = this.createTodoListDOM(selectedTodos);
     };
 }
 

@@ -1,27 +1,27 @@
-import { checkTarget, checkFunction } from "../utils/validators.js"
+import { checkTarget, checkFunction } from "../utils/validators.js";
 import { TYPE, EVENT } from "../utils/constants.js";
 
 class TodoInput {
-    constructor({$target, onAddTodo}) {
-        checkTarget($target)
-        checkFunction(onAddTodo)
+    constructor({ $target, onAddTodo }) {
+        checkTarget($target);
+        checkFunction(onAddTodo);
 
         this.$target = $target;
-        this.onAddTodo = onAddTodo
+        this.onAddTodo = onAddTodo;
 
         this.bindEvents();
     }
 
     bindEvents = () => {
-        this.$target.addEventListener(EVENT.KEY_DOWN, this.onKeyDown)
-    }
+        this.$target.addEventListener(EVENT.KEY_DOWN, this.onKeyDown);
+    };
 
     onKeyDown = (e) => {
-        if (e.key !== 'Enter') return;
+        if (e.key !== "Enter") return;
         const title = e.target.value.trim();
         this.onAddTodo(title);
         e.target.value = "";
-    }
+    };
 }
 
-export default TodoInput
+export default TodoInput;

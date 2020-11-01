@@ -8,15 +8,17 @@ import TodoTab from "./TodoTab.js";
 import TodoCount from "./TodoCount.js";
 
 class App {
-    constructor($target) {
+    constructor($target, store) {
 
         checkTarget($target)
         this.$target = $target;
         this.state = fetchTodos(KEY)
+
+        this.store = store
      
         this.todoInput = new TodoInput({
             $target: document.querySelector(SELECTOR.TODO_INPUT),
-            onAddTodo: this.onAddTodo
+            onAddTodo: this.onAddTodo,
         });
 
         this.todoList = new TodoList({
@@ -25,6 +27,7 @@ class App {
             onToggleTodo: this.onToggleTodo,
             onRemoveTodo: this.onRemoveTodo,
             onEditTodo: this.onEditTodo,
+            store: this.store,
         })
 
         this.todoTab = new TodoTab({
@@ -40,6 +43,12 @@ class App {
     }
 
     onAddTodo = (title) => {
+        this.store.dispatch({
+            type: 'ADD_TITLE',
+            payload: title
+        })
+
+
         const todo = Todo.title(title);
         this.state.setTodo(todo);
         this.setState()
